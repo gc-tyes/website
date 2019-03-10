@@ -18,6 +18,10 @@ class TestPage extends Component {
         const spacingContainer = {
             height: '40px'
           };
+          const buttonStyle = {
+            height: '150px',
+            width: '400px'
+          }
         return (
             <div>
                 <div class="container" style={spacingContainer}></div>
@@ -25,7 +29,7 @@ class TestPage extends Component {
                     <canvas id="myCanvas" width="510" height="510"></canvas>
                 </div>
                 <div class="container mx-auto text-center">
-                    <button type="button" class="btn btn-outline-dark text-center">Begin Test</button>
+                    <button type="button" class="btn btn-outline-dark text-center btn-lg" style={buttonStyle}>Begin Test</button>
                 </div>
 
                 <script src="animation.js"></script>

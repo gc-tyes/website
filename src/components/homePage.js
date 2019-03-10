@@ -92,7 +92,7 @@ class HomePage extends Component {
                   </div>
 
                   <div class="containter text-center pt-3 mx-auto" style={getStartedContainer}>
-                      <Link to="/testPage"><button type="button" class="btn btn-outline-dark text-center">Get Started</button></Link>
+                      <Link to="/testPage"><button type="button" class="btn btn-outline-dark text-center btn-lg">Get Started</button></Link>
                   </div>
                   <div class="mask"></div>
               </div>
