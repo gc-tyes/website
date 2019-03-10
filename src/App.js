@@ -38,7 +38,7 @@ import {
       return (
         <div>
         <nav class="navbar sticky-top navbar-expand-lg navbar-light" style={navbar}>
-                    <h1 class="float-right display-5 text-black-50 font-weight-bold">Health Is Wealth</h1>
+                    <h1 class="float-right display-5 text-black-50 font-weight-bold">Tyes</h1>
                     <ul class="navbar-nav mr-auto">
                             <form class="form-inline my-2 my-lg-0 p-2">
                                     <Link class="nav-link" to="/"><h4 class="pl-5 text-white-50">Home</h4></Link>
