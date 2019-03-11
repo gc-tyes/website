@@ -51,7 +51,7 @@ class HomePage extends Component {
           const backContainer = {
             height: '700px',
             width: '90%',
-            backgroundcolor: 'white'
+            backgroundcolor: 'red'
           };
           
           const constheader = {

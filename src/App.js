@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Main from './components/main';
 import { Link } from 'react-router-dom';
+import Background from './images/background.svg';
 import {
   Collapse,
   Navbar,
@@ -34,6 +35,9 @@ import {
     render() {
       const navbar = {
         backgroundcolor: '#22DFD4'
+      };
+      const mainBack = {
+        backgroundcolor: 'red'
       };
       return (
         <div>
