@@ -64,7 +64,7 @@ class HomePage extends Component {
           };
           
           const promptText = {
-            color: '#2D9E8F'
+            color: '#01A800'
           };
           
           const centerContainer = {
@@ -79,7 +79,7 @@ class HomePage extends Component {
             <div style={mainBackground}>
             <div class="container mx-auto" style={backContainer}>
               <div id="header" class="containter text-center pt-3 mx-auto">
-                  <h1 class="pb-2 mb-2 border-bottom">Welcome to our project!</h1>
+                  <h1 class="display-3 pb-2 mb-2 border-bottom">Welcome to our project!</h1>
               </div>
               <div class="container" style={spacingContainer}></div>
 
