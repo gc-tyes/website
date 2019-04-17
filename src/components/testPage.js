@@ -22,8 +22,9 @@ class TestPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          count: 0,
-          displayCount: "Press Begin to get started",
+          count: 3,
+          displayCount: "Press \"Begin\" to get started",
+          countdown: false,
           running: false,
           buttonText: "Start"
         };
@@ -68,6 +69,11 @@ class TestPage extends Component {
     }
 
     beginTimer() {
+        if (this.state.count == 3) {
+            this.setState(() => ({
+                countdown: true
+            })) 
+        }
         this.setState(() => ({
             running: !this.state.running
         }))
@@ -84,8 +90,21 @@ class TestPage extends Component {
 
     // does something here then run render again
     componentDidMount() {
+        this.firstInterval = setInterval(()=>{
+            if (this.state.countdown && this.state.count != 0) {
+                this.setState(prevState => ({
+                    count: prevState.count - 1,
+                    displayCount: this.state.count
+                }))
+            } else if (this.state.count == 0) {
+                this.setState({
+                    countdown: false
+                })
+            }
+        }, 1000)
+
         this.myInterval = setInterval(()=>{
-            if (this.state.running) {
+            if (this.state.running && !this.state.countdown) {
                 this.setState(prevState => ({
                     count: prevState.count + 1,
                     displayCount: this.state.count / 100.0
