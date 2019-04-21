@@ -7,7 +7,7 @@ import HomePage from './homePage';
 const Main = () => (
     <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/testPage" component={TestPage} />
+        <Route path="/TestPage" component={TestPage} />
     </Switch>
 )
 
