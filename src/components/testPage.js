@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
     Collapse,
     Navbar,
@@ -63,9 +64,8 @@ class TestPage extends Component {
                 </div>
                 <div class="container mx-auto text-center">
                     <button type="button" class="btn btn-outline-dark text-center btn-lg" style={buttonStyle} onClick={beginTimer}>{buttonText}</button>
+                    <Link class="nav-link" to="/ResultsPage"><button type="button" class="btn btn-outline-dark text-center btn-lg" style={buttonStyle}>Results</button></Link>
                 </div>
-
-                <script src="animation.js"></script>
             </div>
         )
     }

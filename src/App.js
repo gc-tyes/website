@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import Main from './components/main';
 import { Link } from 'react-router-dom';
-import Background from './images/background.svg';
 import Logo from './images/logo2.png';
 import {
   Collapse,
@@ -51,6 +50,7 @@ import {
                               <form class="form-inline my-2 my-lg-0 p-2">
                                       <Link class="nav-link" to="/"><h1 class="pl-5 text-white-50">Home</h1></Link>
                                       <Link class="nav-link" to="/TestPage"><h1 class="pl-5 text-white-50">Our Product</h1></Link>
+                                      <Link class="nav-link" to="/ResultsPage"><h1 class="pl-5 text-white-50">Results</h1></Link>
                                       <a class="nav-link" href="#"><h1 class="pl-5 text-white-50">Patient Interface</h1></a>
                                       <a class="nav-link" href="#"><h1 class="pl-5 text-white-50">Therapist Interface</h1></a>
                               </form>
