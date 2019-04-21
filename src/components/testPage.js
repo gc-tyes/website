@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Animation from '../images/animation.gif';
-import Static from '../images/static.png';
 import {
     Collapse,
     Navbar,
@@ -14,6 +12,7 @@ import {
     DropdownMenu,
     DropdownItem,
     Button } from 'reactstrap';
+import { db } from '../config.js';
 
 class TestPage extends Component {
     // basically just bring the animation program here
@@ -21,14 +20,17 @@ class TestPage extends Component {
     // gotta make a constructor in order to do state
     constructor(props) {
         super(props);
+        this.ref = db.ref('/Test/value');
         this.state = {
           count: 3,
           displayCount: "Press \"Begin\" to get started",
           countdown: false,
           running: false,
-          buttonText: "Start"
+          buttonText: "Start",
+          delay: 3
         };
         this.beginTimer = this.beginTimer.bind(this);
+        this.goToResults = this.goToResults.bind(this);
       }
 
     render() {
@@ -57,7 +59,7 @@ class TestPage extends Component {
                 <div class="container" style={spacingContainer}></div>
                 <div class="container text-center mx-auto img-thumbnail shadow-lg p-3 mb-3 bg-white rounded" style={mainContainer}>
                 <div style={spacingContainer}></div>
-                    <h1 class="display-1" style={center}>{displayCount}</h1>
+                    <h1 class="display-2" style={center}>{displayCount}</h1>
                 </div>
                 <div class="container mx-auto text-center">
                     <button type="button" class="btn btn-outline-dark text-center btn-lg" style={buttonStyle} onClick={beginTimer}>{buttonText}</button>
@@ -81,15 +83,38 @@ class TestPage extends Component {
             this.setState(() => ({
                 buttonText: "Stop"
             }))
+        } else if (this.state.buttonText == "Stop") {
+            this.setState(() => ({
+                buttonText: "Restart",
+                countdown: false
+            }))
         } else {
             this.setState(() => ({
-                buttonText: "Start"
+                buttonText: "Stop",
+                count: 3,
+                countdown: true
             }))
         }
     }
 
     // does something here then run render again
     componentDidMount() {
+        const that = this;
+        db.ref('/Test').update({
+            value: "hmmm"
+        });
+        this.ref.on('value', function(snapshot) {
+            db.ref('/Test').update({
+                value: "back to normal"
+            });
+            if (that.state.running) {
+                that.setState(() => ({
+                    running: false,
+                    displayCount: "Test complete! Your Time: " + (that.state.count / 100.0)
+                }));
+                that.goToResults();
+            }
+        });
         this.firstInterval = setInterval(()=>{
             if (this.state.countdown && this.state.count != 0) {
                 this.setState(prevState => ({
@@ -111,6 +136,20 @@ class TestPage extends Component {
                 }))
             }
         }, 10)
+    }
+
+    goToResults() {
+        this.delayInterval = setInterval(()=>{
+            if (this.state.delay != 0) {
+                this.setState(() => ({
+                    delay: this.state.delay - 1
+                }))
+            } else {
+                this.setState(() => ({
+                    displayCount: "oof"
+                }))
+            }
+        }, 1000)
     }
 
     componentWillUnmount() {
