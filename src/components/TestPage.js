@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {
     Collapse,
     Navbar,
@@ -55,6 +56,7 @@ class TestPage extends Component {
           const {displayCount} = this.state;
           const beginTimer = this.beginTimer;
           const {buttonText} = this.state;
+
         return (
             <div>
                 <div class="container" style={spacingContainer}></div>
@@ -145,9 +147,7 @@ class TestPage extends Component {
                     delay: this.state.delay - 1
                 }))
             } else {
-                this.setState(() => ({
-                    displayCount: "oof"
-                }))
+                this.props.history.push('/ResultsPage');
             }
         }, 1000)
     }
