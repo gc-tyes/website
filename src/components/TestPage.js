@@ -25,7 +25,7 @@ class TestPage extends Component {
         this.ref = db.ref('/Test/value');
         this.state = {
           count: 3,
-          displayCount: "Press \"Begin\" to get started",
+          displayCount: "Press \"Start\" to get started",
           countdown: false,
           running: false,
           buttonText: "Start",
@@ -66,7 +66,6 @@ class TestPage extends Component {
                 </div>
                 <div class="container mx-auto text-center">
                     <button type="button" class="btn btn-outline-dark text-center btn-lg" style={buttonStyle} onClick={beginTimer}>{buttonText}</button>
-                    <Link class="nav-link" to="/ResultsPage"><button type="button" class="btn btn-outline-dark text-center btn-lg" style={buttonStyle}>Results</button></Link>
                 </div>
             </div>
         )
