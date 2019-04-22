@@ -1,11 +1,11 @@
 import Firebase from 'firebase';  
 let config = {  
-    apiKey: "AIzaSyC5E_D_wqu8FskqMyu2wN8Il-OLTEK53x8",
-    authDomain: "tyes-web.firebaseapp.com",
-    databaseURL: "https://tyes-web.firebaseio.com",
-    projectId: "tyes-web",
-    storageBucket: "tyes-web.appspot.com",
-    messagingSenderId: "720580829368"
+    apiKey: "AIzaSyCHhX5PmpsmLQhY95HmLnm2VYc0m81mos0",
+    authDomain: "tyes-web-478b4.firebaseapp.com",
+    databaseURL: "https://tyes-web-478b4.firebaseio.com",
+    projectId: "tyes-web-478b4",
+    storageBucket: "tyes-web-478b4.appspot.com",
+    messagingSenderId: "496916704132"
 };
 let app = Firebase.initializeApp(config);  
 export const db = app.database();  

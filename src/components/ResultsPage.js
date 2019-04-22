@@ -13,24 +13,78 @@ import {
     DropdownMenu,
     DropdownItem,
     Button } from 'reactstrap';
+import { db } from '../config.js';
+
+let times = [];
+db.ref('/Times/value').on('value', function(snapshot) {
+    times = snapshot.val();
+})
+let healthyAverage = 19.47;
 
 class ResultsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            times: {
-                first: "0",
-                second: "1",
-                third: "2",
-                fourth: "3",
-                fifth: "4",
-                sixth: "5",
-                seventh: "6",
-                eighth: "7",
-                ninth: "8"
-            }
+            times: times
         }
       }
+
+      componentWillMount() {
+        const that = this
+        db.ref('/Times/value').once('value', function(snapshot) {
+            that.setState({
+                times: snapshot.val()
+            })
+        })
+      }
+
+      calculateSum() {
+        var sum = 0;
+        for (var i = 0; i < this.state.times.length; i++) {
+            sum += this.state.times[i];
+        }
+        return sum;
+      }
+
+      calculateAverage() {
+          var sum = this.calculateSum();
+          var display = sum / this.state.times.length + ""
+          if (display.length > 5) {
+            display = display.substring(0, 5)
+          }
+          return display;
+      }
+
+      calculateDeviation() {
+        var sum = this.calculateSum();
+        var difference = sum - healthyAverage;
+        var display;
+        if (difference >= 0) {
+            display = "+" + difference
+        } else {
+            display = "" + difference
+        }
+        if (display.length > 5) {
+            display = display.substring(0, 5)
+          }
+          return display;
+      }
+
+      determineServerity() {
+          var deviation = this.calculateDeviation();
+          if (deviation <= 0) {
+              return "None"
+          } else if (deviation <= 5) {
+              return "Slight";
+          } else if (deviation <= 10) {
+            return "Moderate";
+        } else if (deviation <= 20) {
+            return "Advanced";
+        } else {
+            return "Severe";
+        }
+      }
+
     render() {
         const mainBackground = {
             background: '#E8F4E7',
@@ -54,16 +108,22 @@ class ResultsPage extends Component {
                     </div>
                     <div style={spacing}></div>
                     <div class="container-fluid">
-                        <DataPoint title="Time to place first peg: " value={this.state.times.first}/>
-                        <DataPoint title="Time to place second peg: " value={this.state.times.second}/>
-                        <DataPoint title="Time to place third peg: " value={this.state.times.third}/>
-                        <DataPoint title="Time to place fourth peg: " value={this.state.times.fourth}/>
-                        <DataPoint title="Time to place fifth peg: " value={this.state.times.fifth}/>
-                        <DataPoint title="Time to place sixth peg: " value={this.state.times.sixth}/>
-                        <DataPoint title="Time to place seventh peg: " value={this.state.times.seventh}/>
-                        <DataPoint title="Time to place eighth peg: " value={this.state.times.eighth}/>
-                        <DataPoint title="Time to place ninth peg: " value={this.state.times.ninth}/>
-                        <DataPoint title="Average Peg placement time: " value={this.state.times.ninth}/>
+                        <h1 class="font-weight-bold">Individual Peg Times</h1>
+                        <DataPoint title="Time to place first peg: " value={this.state.times[0] + " second(s)"}/>
+                        <DataPoint title="Time to place second peg: " value={this.state.times[1] + " second(s)"}/>
+                        <DataPoint title="Time to place third peg: " value={this.state.times[2] + " second(s)"}/>
+                        <DataPoint title="Time to place fourth peg: " value={this.state.times[3] + " second(s)"}/>
+                        <DataPoint title="Time to place fifth peg: " value={this.state.times[4] + " second(s)"}/>
+                        <DataPoint title="Time to place sixth peg: " value={this.state.times[5] + " second(s)"}/>
+                        <DataPoint title="Time to place seventh peg: " value={this.state.times[6] + " second(s)"}/>
+                        <DataPoint title="Time to place eighth peg: " value={this.state.times[7]+ " second(s)"}/>
+                        <DataPoint title="Time to place ninth peg: " value={this.state.times[8] + " second(s)"}/>
+                        <div style={spacing}></div>
+                        <h1 class="font-weight-bold">Time Analysis</h1>
+                        <DataPoint title="Total time: " value={this.calculateSum() + " second(s)"}/>
+                        <DataPoint title="Average Peg placement time: " value={this.calculateAverage() + " second(s)"}/>
+                        <DataPoint title="Deviation From Healthy Average: " value={this.calculateDeviation() + " second(s)"}/>
+                        <DataPoint title="Degree of Impairment: " value={this.determineServerity()}/>
                     </div>
                 </div>
             </div>
@@ -84,8 +144,13 @@ class DataPoint extends Component {
         }
 
         return (
-            <div class="container">
-                <h3>{this.props.title + " " + this.props.value}</h3>
+            <div class="row">
+                <div class="col">
+                    <h3>{this.props.title + " "}</h3>
+                </div>
+                <div class="col">
+                    <h5>{this.props.value}</h5>
+                </div>
                 <div style={spacing}></div>
             </div>
         )

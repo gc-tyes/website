@@ -16,6 +16,10 @@ import {
     Button } from 'reactstrap';
 import { db } from '../config.js';
 
+db.ref('/Test').update({
+    value: "working"
+})
+
 class TestPage extends Component {
     // basically just bring the animation program here
     // get canvas through something like getById
@@ -82,19 +86,28 @@ class TestPage extends Component {
         }))
         if (this.state.buttonText == "Start") {
             this.setState(() => ({
-                buttonText: "Stop"
+                buttonText: "Stop Test"
             }))
-        } else if (this.state.buttonText == "Stop") {
+            db.ref('/Running').update({
+                value: "yes"
+            });
+        } else if (this.state.buttonText == "Stop Test") {
             this.setState(() => ({
                 buttonText: "Restart",
                 countdown: false
             }))
+            db.ref('/Running').update({
+                value: "no"
+            });
         } else {
             this.setState(() => ({
                 buttonText: "Stop",
                 count: 3,
                 countdown: true
             }))
+            db.ref('/Running').update({
+                value: "yes"
+            });
         }
     }
 
@@ -103,6 +116,9 @@ class TestPage extends Component {
         const that = this;
         db.ref('/Test').update({
             value: "hmmm"
+        });
+        db.ref('/Running').update({
+            value: "no"
         });
         this.ref.on('value', function(snapshot) {
             db.ref('/Test').update({
@@ -113,6 +129,9 @@ class TestPage extends Component {
                     running: false,
                     displayCount: "Test complete! Your Time: " + (that.state.count / 100.0)
                 }));
+                db.ref('/Running').update({
+                    value: "no"
+                });
                 that.goToResults();
             }
         });
@@ -153,6 +172,8 @@ class TestPage extends Component {
 
     componentWillUnmount() {
         clearInterval(this.myInterval)
+        clearInterval(this.delayInterval);
+        clearInterval(this.firstInterval);
     }
 }
 
