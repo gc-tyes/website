@@ -14,6 +14,7 @@ import {
     DropdownItem,
     Button } from 'reactstrap';
 import { db } from '../config.js';
+import { Line } from "react-chartjs-2";
 
 let times = [];
 db.ref('/Times/value').on('value', function(snapshot) {
@@ -25,20 +26,71 @@ class ResultsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            times: times
+            times: times,
+            chartData: {
+                labels: ["1st Peg", "2nd Peg", "3rd Peg", "4th Peg", "5th Peg", "6th Peg", "7th Peg", "8th Peg", "9th Peg"],
+                datasets: [
+                    {
+                        label: "Today",
+                        backgroundColor: "rgba(117,222,112,0.2)",
+                        borderColor: "rgba(117,222,112,1)",
+                        pointBackgroundColor: "rgba(117,222,112,1)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(117,222,112,1)"
+                    },
+                    {
+                        label: "Last Week",
+                        backgroundColor: "rgba(232, 244, 231,0.2)",
+                        borderColor: "rgba(232, 244, 231,1)",
+                        pointBackgroundColor: "rgba(232, 244, 231,1)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(232, 244, 231,1)"
+                    }
+                ]
+            },
+            chartOptions: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            callback: function (value, index, values) {
+                                return value + 's';
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time to Place Peg'
+                        }
+                    }]
+                }
+            }
         }
+      }
+
+      randomData(n) {
+        var result = []
+        for (let i = 0; i < n; i++) {
+            result.push(1.4 + Math.floor(Math.random() * 21) / 10)
+        }
+        return result
       }
 
       componentWillMount() {
         const that = this
         db.ref('/Times/value').once('value', function(snapshot) {
+            var oldCD = that.state.chartData
+            oldCD.datasets[0].data = snapshot.val()
+            oldCD.datasets[1].data = that.randomData(9)
             that.setState({
-                times: snapshot.val()
+                times: snapshot.val(),
+                chartData: oldCD
             })
         })
       }
 
       calculateSum() {
+        console.log(this.state.times)
         var sum = 0;
         for (var i = 0; i < this.state.times.length; i++) {
             sum += this.state.times[i];
@@ -109,15 +161,7 @@ class ResultsPage extends Component {
                     <div style={spacing}></div>
                     <div class="container-fluid">
                         <h1 class="font-weight-bold">Individual Peg Times</h1>
-                        <DataPoint title="Time to place first peg: " value={this.state.times[0] + " second(s)"}/>
-                        <DataPoint title="Time to place second peg: " value={this.state.times[1] + " second(s)"}/>
-                        <DataPoint title="Time to place third peg: " value={this.state.times[2] + " second(s)"}/>
-                        <DataPoint title="Time to place fourth peg: " value={this.state.times[3] + " second(s)"}/>
-                        <DataPoint title="Time to place fifth peg: " value={this.state.times[4] + " second(s)"}/>
-                        <DataPoint title="Time to place sixth peg: " value={this.state.times[5] + " second(s)"}/>
-                        <DataPoint title="Time to place seventh peg: " value={this.state.times[6] + " second(s)"}/>
-                        <DataPoint title="Time to place eighth peg: " value={this.state.times[7]+ " second(s)"}/>
-                        <DataPoint title="Time to place ninth peg: " value={this.state.times[8] + " second(s)"}/>
+                        <Line data={this.state.chartData} options={this.state.chartOptions} />
                         <div style={spacing}></div>
                         <h1 class="font-weight-bold">Time Analysis</h1>
                         <DataPoint title="Total time: " value={this.calculateSum() + " second(s)"}/>
