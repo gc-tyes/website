@@ -45,7 +45,8 @@ class TestPage extends Component {
           };
           const buttonStyle = {
             height: '75px',
-            width: '425px'
+            width: '425px',
+            background: 'linear-gradient(#FFFFFF, #E5E5E5)',
           }
           const center = {
             marginleft: 'auto',
@@ -53,7 +54,12 @@ class TestPage extends Component {
           }
 
           const mainContainer = {
-              height: '500px'
+              height: '500px',
+          }
+
+          const mainBackground = {
+            background: 'linear-gradient(#E8F4E7, #ADD1AA)',
+            height: '900px'
           }
 
           const {count} = this.state;
@@ -62,7 +68,7 @@ class TestPage extends Component {
           const {buttonText} = this.state;
 
         return (
-            <div>
+            <div style={mainBackground}>
                 <div class="container" style={spacingContainer}></div>
                 <div class="container text-center mx-auto img-thumbnail shadow-lg p-3 mb-3 bg-white rounded" style={mainContainer}>
                 <div style={spacingContainer}></div>

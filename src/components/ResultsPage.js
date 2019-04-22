@@ -139,13 +139,13 @@ class ResultsPage extends Component {
 
     render() {
         const mainBackground = {
-            background: '#E8F4E7',
-            height: '900px'
+            background: 'linear-gradient(#E8F4E7, #ADD1AA)',
+            height: '1000px'
           };
 
         const mainContainer = {
             background: 'white',
-            height: '900px'
+            height: '1000px'
         }
 
         const spacing = {
