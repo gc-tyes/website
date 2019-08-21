@@ -17,9 +17,6 @@ import { db } from '../config.js';
 import { Line } from "react-chartjs-2";
 
 let times = [];
-db.ref('/Times/value').on('value', function(snapshot) {
-    times = snapshot.val();
-})
 let healthyAverage = 19.47;
 
 class ResultsPage extends Component {
@@ -76,7 +73,10 @@ class ResultsPage extends Component {
         return result
       }
 
-      componentWillMount() {
+      async componentWillMount() {
+        await db.ref('/Times/value').on('value', function(snapshot) {
+            times = snapshot.val();
+        })
         const that = this
         db.ref('/Times/value').once('value', function(snapshot) {
             var oldCD = that.state.chartData

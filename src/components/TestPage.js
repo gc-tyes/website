@@ -33,7 +33,8 @@ class TestPage extends Component {
           countdown: false,
           running: false,
           buttonText: "Start",
-          delay: 3
+          delay: 3,
+          pressed: false
         };
         this.beginTimer = this.beginTimer.bind(this);
         this.goToResults = this.goToResults.bind(this);
@@ -72,7 +73,9 @@ class TestPage extends Component {
                 <div class="container" style={spacingContainer}></div>
                 <div class="container text-center mx-auto img-thumbnail shadow-lg p-3 mb-3 bg-white rounded" style={mainContainer}>
                 <div style={spacingContainer}></div>
-                    <h1 class="display-2" style={center}>{displayCount}</h1>
+                    <div class="container" style={center}>
+                        <h1 class="display-2" >{displayCount}</h1>
+                    </div>
                 </div>
                 <div class="container mx-auto text-center">
                     <button type="button" class="btn btn-outline-dark text-center btn-lg" style={buttonStyle} onClick={beginTimer}>{buttonText}</button>
@@ -84,7 +87,8 @@ class TestPage extends Component {
     beginTimer() {
         if (this.state.count == 3) {
             this.setState(() => ({
-                countdown: true
+                countdown: true,
+                pressed: true
             })) 
         }
         this.setState(() => ({
@@ -105,9 +109,12 @@ class TestPage extends Component {
             db.ref('/Running').update({
                 value: "no"
             });
+            db.ref('/Test').update({
+                value: "CHANGE"
+            });
         } else {
             this.setState(() => ({
-                buttonText: "Stop",
+                buttonText: "Stop Test",
                 count: 3,
                 countdown: true
             }))
@@ -130,9 +137,10 @@ class TestPage extends Component {
             db.ref('/Test').update({
                 value: "back to normal"
             });
-            if (that.state.running) {
+            if (that.state.running && that.state.pressed) {
                 that.setState(() => ({
                     running: false,
+                    pressed: false,
                     displayCount: "Test complete! Your Time: " + (that.state.count / 100.0)
                 }));
                 db.ref('/Running').update({
@@ -171,13 +179,16 @@ class TestPage extends Component {
                     delay: this.state.delay - 1
                 }))
             } else {
+                this.setState(() => ({
+                    delay: this.state.delay - 1
+                }))
                 this.props.history.push('/ResultsPage');
             }
         }, 1000)
     }
 
     componentWillUnmount() {
-        clearInterval(this.myInterval)
+        clearInterval(this.myInterval);
         clearInterval(this.delayInterval);
         clearInterval(this.firstInterval);
     }
