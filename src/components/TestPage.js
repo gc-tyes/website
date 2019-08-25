@@ -59,7 +59,7 @@ class TestPage extends Component {
           }
 
           const mainBackground = {
-            background: 'linear-gradient(#E8F4E7, #ADD1AA)',
+            background: 'linear-gradient(#F8FFF7, #D9FFD6)',
             height: '900px'
           }
 
