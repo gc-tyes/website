@@ -14,6 +14,7 @@ db = firebase.database();
 //     // ...
 //   });
 
+var serialport = require('serialport');
 // var WebSocketServer = require('ws').Server;
 const datarate = 9600;
 
@@ -32,7 +33,7 @@ var text = document.getElementById("t")
 
 async function getPort() {
     let portName = '';
-    await list(function (err, ports) {
+    await serialport.list(function (err, ports) {
         ports.forEach(function(port) {
             if (port.comName.includes("usbmodem")) {
                 portName = port.comName;
@@ -72,7 +73,7 @@ async function serialIn() {
         console.log("Using port: " + portName + " with data rate " + datarate);
     }
     var myPort = new serialport(portName, datarate);
-    var Readline = parsers.Readline; // make instance of Readline parser
+    var Readline = serialport.parsers.Readline; // make instance of Readline parser
     var parser = new Readline(); // make a new parser to read ASCII lines
     myPort.pipe(parser); // pipe the serial stream to the parser
     // myPort.on('open', showPortOpen);
