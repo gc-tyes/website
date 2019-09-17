@@ -1,5 +1,19 @@
-var firebase = require('firebase');
-var serialport = require('serialport');
+db = firebase.database();
+
+// Example Writing to DB
+
+// db.ref('/Bruh').update({
+//     value: "yes"
+// // ...
+// });
+
+// Example Reading From DB
+
+//   firebase.database().ref('/Record').once('value').then(function(snapshot) {
+//     console.log(snapshot.val())
+//     // ...
+//   });
+
 // var WebSocketServer = require('ws').Server;
 const datarate = 9600;
 
@@ -14,13 +28,11 @@ const datarate = 9600;
 // firebase.initializeApp(config);
 // var db = firebase.database();
 
-db.ref('').once("value").then(res => {
-    console.log(res)
-})
+var text = document.getElementById("t")
 
 async function getPort() {
     let portName = '';
-    await serialport.list(function (err, ports) {
+    await list(function (err, ports) {
         ports.forEach(function(port) {
             if (port.comName.includes("usbmodem")) {
                 portName = port.comName;
@@ -31,19 +43,23 @@ async function getPort() {
 }
 
 function showPortOpen() {
-    console.log('port open. Data rate: ' + myPort.baudRate);
+    //console.log('port open. Data rate: ' + myPort.baudRate);
+    text.innerText += ("\nport open. Data rate: " + myPort.baudRate)
 }
 
 function readSerialData(data) {
     console.log(data);
+    text.innerText += ("\n" + data)
 }
 
 function showPortClose() {
     console.log('port closed.');
+    text.innerText += ("\nport closed.")
 }
 
 function showError(error) {
     console.log('Serial port error: ' + error);
+    text.innerText += ("\nSerial port error: " + error)
 }
 
 async function serialIn() {
@@ -56,7 +72,7 @@ async function serialIn() {
         console.log("Using port: " + portName + " with data rate " + datarate);
     }
     var myPort = new serialport(portName, datarate);
-    var Readline = serialport.parsers.Readline; // make instance of Readline parser
+    var Readline = parsers.Readline; // make instance of Readline parser
     var parser = new Readline(); // make a new parser to read ASCII lines
     myPort.pipe(parser); // pipe the serial stream to the parser
     // myPort.on('open', showPortOpen);

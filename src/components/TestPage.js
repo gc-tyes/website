@@ -134,6 +134,9 @@ class TestPage extends Component {
             value: "no"
         });
         this.ref.on('value', function(snapshot) {
+            db.ref('/Record').update({
+                value: "no"
+            });
             db.ref('/Test').update({
                 value: "back to normal"
             });
@@ -156,6 +159,9 @@ class TestPage extends Component {
                     displayCount: this.state.count
                 }))
             } else if (this.state.count == 0) {
+                db.ref('/Record').update({
+                    value: "yes"
+                });
                 this.setState({
                     countdown: false
                 })
