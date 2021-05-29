@@ -6,7 +6,7 @@
   "dependencies": {
     "firebase": "^6.4.2",
     "serialport": "^7.1.4",
-    "ws": "^6.2.1"
+    "ws": "^7.4.6"
   },
   "devDependencies": {},
   "scripts": {
